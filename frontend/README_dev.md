@@ -3,7 +3,7 @@
 ## 开发注意事项
 
 ### 📋 任务管理
-- **及时更新TODO**: 在开发过程中，请及时在Github的TODO列表(https://github.com/users/valley12/projects/1)中进行认领和更新，以防止重复开发
+- **及时更新TODO**: 在开发过程中，请及时在Github的TODO列表(https://github.com/users/valley12/projects/1 )中进行认领和更新，以防止重复开发
 - **任务分解**: 将复杂功能分解为小的、可管理的任务
 
 ### 🏗️ 代码规范
