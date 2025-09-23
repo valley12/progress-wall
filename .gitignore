@@ -1,0 +1,83 @@
+HELP.md
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+微服务初始化指南.md
+GitHub团队协作指南.md
+
+### Docker & Environment ###
+# Docker volumes data
+/mysql_data/
+/redis_data/
+/rabbitmq_data/
+
+# Environment specific files
+.env
+.env.local
+.env.production
+.env.development
+
+# Logs
+*.log
+logs/
+
+# Database
+*.db
+*.sqlite
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# IDE specific (additional)
+.vscode/settings.json
+.vscode/launch.json
+.vscode/tasks.json
+
+# Maven wrapper (keep mvnw but not the jar)
+.mvn/wrapper/maven-wrapper.jar
+
+# Application specific
+application-local.properties
+application-local.yml
+bootstrap-local.properties
+bootstrap-local.yml

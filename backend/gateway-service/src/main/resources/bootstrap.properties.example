@@ -1,0 +1,8 @@
+# 如果需要使用Nacos配置中心，重命名此文件为bootstrap.properties
+# 并在pom.xml中重新添加nacos-config依赖
+
+spring.application.name=gateway-service
+spring.cloud.nacos.config.server-addr=localhost:8850
+spring.cloud.nacos.config.file-extension=properties
+spring.cloud.nacos.config.namespace=public
+spring.cloud.nacos.config.group=DEFAULT_GROUP
