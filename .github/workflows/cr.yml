@@ -16,6 +16,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          LOG_LEVEL: debug
           # optional
           LANGUAGE: Chinese
           PROMPT: "As a code review expert, please clearly point out the problems and suggestions of the code in a bullet-point list, and finally give a quality score from 1 to 100."
