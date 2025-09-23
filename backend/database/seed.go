@@ -25,7 +25,7 @@ func Seed(db *gorm.DB) error {
 	return nil
 }
 
-func createDefaultUsers(db *gorm.DB) error {
+func createDefaultUsers(_ *gorm.DB) error {
 	// TODO: 创建默认用户，目前密码加密方法还没确定
 	return nil
 }
