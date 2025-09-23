@@ -1,23 +1,55 @@
 name: Code Review
+on:
+  pull_request_target:
+    types:
+      - opened      # Triggers when a PR is opened
+      - reopened    # Triggers when a PR is reopened
+      - synchronize # Triggers when a commit is pushed to the PR
 
+# fix: GraphQL: Resource not accessible by integration (addComment) error
 permissions:
-  contents: read
   pull-requests: write
 
-on:
-  pull_request:
-    types: [opened, reopened]
-
 jobs:
-  test:
+  setup-deepseek-review:
     runs-on: ubuntu-latest
+    name: Code Review
     steps:
-      - uses: anc95/ChatGPT-CodeReview@main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          LOG_LEVEL: debug
-          # optional
-          LANGUAGE: Chinese
-          PROMPT: "As a code review expert, please clearly point out the problems and suggestions of the code in a bullet-point list, and finally give a quality score from 1 to 100."
-          IGNORE_PATTERNS: /node_modules,*.md # Regex pattern to ignore files, separated by comma
+      - name: DeepSeek Code Review
+        uses: hustcer/deepseek-review@v1
+        with:
+          chat-token: ${{ secrets.CHAT_TOKEN }}
+          base-url: https://api.siliconflow.cn/v1
+          model: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
+          sys-prompt: >
+            你是一位资深的软件工程师和代码审查（Code Review）专家。请全面审查以下代码。
+            
+            你的审查应重点关注以下几个方面：
+            1.  **代码质量与可维护性**: 评估代码的可读性、结构、命名规范和注释。是否遵循了该语言社区的最佳实践和设计模式？
+            2.  **可靠性与健壮性**: 检查错误处理机制、资源管理（如内存、文件句柄）、边界条件和潜在的运行时错误。
+            3.  **性能**: 分析是否存在性能瓶颈，如不高效的算法、过多的资源消耗等，并提出优化建议。
+            4.  **安全性**: 识别常见的安全漏洞，例如：不当的输入验证、潜在的注入风险、敏感信息处理不当等。
+            
+            要求：
+            - 所有建议都必须是具体、可操作的，并尽可能提供修改前后的代码示例（注意不要大段的复制，给出关键位置即可）。
+            - **请用中文回答**。
+            - 按照以下格式输出你的审查报告：
+            - **如果某些条目没有问题请直接输出无问题**
+            
+            #### 1. 总体分析
+            - (对代码的整体评价，包括其功能、架构、优点和主要待改进点。)
+            
+            #### 2. 代码质量与可维护性
+            - (关于可读性、重构、命名、注释等方面的具体建议。)
+            
+            #### 3. 可靠性与健壮性
+            - (关于错误处理、边界条件和资源管理的建议。)
+            
+            #### 4. 性能优化
+            - (识别出的性能瓶颈和具体的优化方案。)
+            
+            #### 5. 安全审查
+            - (发现的潜在安全漏洞和修复建议。)
+            
+            **综合质量评分:** (0-100分)
+            ```
