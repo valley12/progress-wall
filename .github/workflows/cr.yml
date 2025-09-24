@@ -21,6 +21,7 @@ jobs:
           chat-token: ${{ secrets.CHAT_TOKEN }}
           base-url: https://api.siliconflow.cn/v1
           model: deepseek-ai/DeepSeek-R1-Distill-Qwen-32B
+          exclude-patterns: npm-lock.yaml,package-lock.json,*.lock,*.png,*.jpg,*.svg,*.mwb
           sys-prompt: >
             你是一位资深的软件工程师和代码审查（Code Review）专家。请全面审查以下代码。
             
