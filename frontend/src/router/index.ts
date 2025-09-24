@@ -8,7 +8,12 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/HomeView.vue')
   },
   {
-    path: '/kanban',
+    path: '/boards',
+    name: 'BoardList',
+    component: () => import('@/views/dashboard/BoardListView.vue')
+  },
+  {
+    path: '/kanban/:boardId?',
     name: 'Kanban',
     component: () => import('@/views/dashboard/KanbanView.vue')
   },
