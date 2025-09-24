@@ -16,7 +16,9 @@ backend/
 ├── controllers/            # 控制器层
 │   └── ...
 ├── database/              # 数据库连接
-│   └── database.go
+|   |-  seed.go            # 初始权限组设定
+|   |-  migrate.go         # 数据库迁移（自动建表）
+│   └── database.go        # 数据库连接
 ├── middleware/            # 中间件
 │   └── ...
 ├── models/                # 数据模型

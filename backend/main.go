@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"progress-wall-backend/config"
+	"progress-wall-backend/database"
 )
 
 func main() {
@@ -19,5 +20,21 @@ func main() {
 	fmt.Printf("- JWT密钥长度: %d\n", len(cfg.JWT.Secret))
 	fmt.Printf("- CORS允许来源: %s\n", cfg.CORS.AllowOrigins)
 
-	log.Println("配置加载完成")
+	// 初始化数据库
+	db, err := database.InitDB(cfg)
+	if err != nil {
+		log.Fatal("数据库初始化失败:", err)
+	}
+
+	// 执行数据库迁移
+	if err := database.Migrate(db); err != nil {
+		log.Fatal("数据库迁移失败:", err)
+	}
+
+	// 初始化基础数据
+	if err := database.Seed(db); err != nil {
+		log.Fatal("初始化基础数据失败:", err)
+	}
+
+	log.Println("数据库初始化完成")
 }
