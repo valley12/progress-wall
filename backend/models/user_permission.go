@@ -39,10 +39,10 @@ type UserPermissionGroup struct {
 
 // UserPermissionGroupUser 用户权限组用户关联表
 type UserPermissionGroupUser struct {
-	ID                    uint           `json:"id" gorm:"primaryKey;autoIncrement"`
-	UserPermissionGroupID uint           `json:"user_permission_group_id" gorm:"not null;index"`
-	UserID                uint           `json:"user_id" gorm:"not null;index"`
-	CreatedAt             time.Time      `json:"created_at"`
-	UpdatedAt             time.Time      `json:"updated_at"`
-	DeletedAt             gorm.DeletedAt `json:"-" gorm:"index"`
+	ID        uint           `json:"id" gorm:"primaryKey;autoIncrement"`
+	GroupID   uint           `json:"group_id" gorm:"not null;index"`
+	UserID    uint           `json:"user_id" gorm:"not null;index"`
+	CreatedAt time.Time      `json:"created_at"`
+	UpdatedAt time.Time      `json:"updated_at"`
+	DeletedAt gorm.DeletedAt `json:"-" gorm:"index"`
 }
