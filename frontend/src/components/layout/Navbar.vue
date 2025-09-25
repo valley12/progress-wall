@@ -20,11 +20,11 @@
               首页
             </router-link>
             <router-link
-              to="/kanban"
+              to="/boards"
               class="text-gray-500 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors"
-              :class="{ 'text-primary': $route.path === '/kanban' }"
+              :class="{ 'text-primary': $route.path === '/boards' }"
             >
-              看板
+              看板列表
             </router-link>
           </div>
         </div>
