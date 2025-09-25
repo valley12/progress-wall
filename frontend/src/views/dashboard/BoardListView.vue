@@ -81,7 +81,7 @@
             v-for="board in boardStore.boards"
             :key="board.id"
             :board="board"
-            view-mode="card"
+            :view-mode="'card'"
             @click="openBoard"
             @edit="editBoard"
             @delete="deleteBoard"
@@ -107,7 +107,7 @@
             v-for="board in boardStore.boards"
             :key="board.id"
             :board="board"
-            view-mode="list"
+            :view-mode="'list'"
             @click="openBoard"
             @edit="editBoard"
             @delete="deleteBoard"
@@ -124,8 +124,8 @@
         </div>
         <h3 class="text-lg font-semibold text-foreground mb-2">还没有看板</h3>
         <p class="text-muted-foreground mb-6">创建您的第一个看板来开始管理任务</p>
-        <Button @click="showCreateDialog = true">
-          创建看板
+        <Button @click="showCreateDialog = true" :disabled="boardStore.loading">
+          {{ boardStore.loading ? '创建中...' : '创建看板' }}
         </Button>
       </div>
 

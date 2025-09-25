@@ -16,45 +16,59 @@ export const useBoardStore = defineStore('board', () => {
   const loading = ref(false)
   const error = ref<string | null>(null)
 
-  // 从 API 获取看板列表
+  /**
+   * 转换API数据为本地格式
+   * 避免重复的对象转换，提高性能
+   */
+  const transformBoardData = (apiBoard: any): Board => {
+    return {
+      ...apiBoard,
+      id: String(apiBoard.id), // 确保 id 是字符串
+      createdAt: new Date(apiBoard.createdAt),
+      updatedAt: new Date(apiBoard.updatedAt)
+    }
+  }
+
+  /**
+   * 从 API 获取看板列表
+   * 优化数据处理，减少不必要的对象转换
+   */
   const fetchBoards = async () => {
     loading.value = true
     error.value = null
     
     try {
       const response = await boardApiService.getKanbanList()
+      
+      // 验证响应数据
       if (response.data && Array.isArray(response.data)) {
-        // 转换日期字符串为 Date 对象，并确保 id 是字符串
-        boards.value = response.data.map(board => ({
-          ...board,
-          id: board.id.toString(), // 确保 id 是字符串
-          createdAt: new Date(board.createdAt),
-          updatedAt: new Date(board.updatedAt)
-        }))
+        // 批量转换数据，避免多次对象创建
+        boards.value = response.data.map(transformBoardData)
       } else {
         error.value = response.msg || '获取看板列表失败'
+        boards.value = [] // 确保空状态处理
       }
     } catch (err) {
       error.value = err instanceof Error ? err.message : '获取看板列表失败'
+      boards.value = [] // 错误时清空列表
     } finally {
       loading.value = false
     }
   }
 
-  // 创建看板
+  /**
+   * 创建看板
+   * 使用统一的数据转换函数，提高代码复用性
+   */
   const addBoard = async (board: Omit<Board, 'id' | 'createdAt' | 'updatedAt'>) => {
     loading.value = true
     error.value = null
     
     try {
       const response = await boardApiService.createKanban(board)
+      
       if (response.data) {
-        const newBoard = {
-          ...response.data,
-          id: response.data.id.toString(), // 确保 id 是字符串
-          createdAt: new Date(response.data.createdAt),
-          updatedAt: new Date(response.data.updatedAt)
-        }
+        const newBoard = transformBoardData(response.data)
         boards.value.push(newBoard)
         return newBoard
       } else {
@@ -69,21 +83,21 @@ export const useBoardStore = defineStore('board', () => {
     }
   }
 
-  // 更新看板
+  /**
+   * 更新看板
+   * 使用统一的数据转换函数，提高代码复用性
+   */
   const updateBoard = async (boardId: string, updates: Partial<Board>) => {
     loading.value = true
     error.value = null
     
     try {
       const response = await boardApiService.updateKanban(boardId, updates)
+      
       if (response.data) {
-        const updatedBoard = {
-          ...response.data,
-          id: response.data.id.toString(), // 确保 id 是字符串
-          createdAt: new Date(response.data.createdAt),
-          updatedAt: new Date(response.data.updatedAt)
-        }
+        const updatedBoard = transformBoardData(response.data)
         const index = boards.value.findIndex(b => b.id === boardId)
+        
         if (index !== -1) {
           boards.value[index] = updatedBoard
         }

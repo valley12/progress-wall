@@ -100,9 +100,15 @@ import Button from '@/components/ui/Button.vue'
 import DropdownMenu from '@/components/ui/DropdownMenu.vue'
 import DropdownMenuItem from '@/components/ui/DropdownMenuItem.vue'
 
+/**
+ * 看板卡片组件
+ * 支持卡片和列表两种显示模式
+ * 提供看板的基本信息展示和操作功能
+ */
+
 interface Props {
   board: Board
-  viewMode?: 'card' | 'list'
+  viewMode?: 'card' | 'list' // 显示模式：卡片或列表
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -110,23 +116,41 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emit = defineEmits<{
-  click: [board: Board]
-  edit: [board: Board]
-  delete: [board: Board]
+  click: [board: Board]    // 点击看板事件
+  edit: [board: Board]     // 编辑看板事件
+  delete: [board: Board]   // 删除看板事件
 }>()
 
+/**
+ * 处理看板点击事件
+ * 触发父组件的点击回调
+ */
 const handleClick = () => {
   emit('click', props.board)
 }
 
+/**
+ * 处理编辑看板事件
+ * 触发父组件的编辑回调
+ */
 const handleEdit = () => {
   emit('edit', props.board)
 }
 
+/**
+ * 处理删除看板事件
+ * 触发父组件的删除回调
+ */
 const handleDelete = () => {
   emit('delete', props.board)
 }
 
+/**
+ * 格式化日期显示
+ * 使用中文本地化格式，显示年月日
+ * @param date 要格式化的日期对象
+ * @returns 格式化后的日期字符串
+ */
 const formatDate = (date: Date) => {
   return new Intl.DateTimeFormat('zh-CN', {
     year: 'numeric',
