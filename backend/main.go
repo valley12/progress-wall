@@ -1,23 +1,50 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"progress-wall-backend/config"
+	"progress-wall-backend/database"
+	"progress-wall-backend/models"
+	"progress-wall-backend/repository"
+	"progress-wall-backend/router"
+	"progress-wall-backend/services"
+
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	// 加载配置
 	cfg := config.Load()
 
-	// 打印配置信息
-	fmt.Printf("服务器配置:\n")
-	fmt.Printf("- 端口: %s\n", cfg.Server.Port)
-	fmt.Printf("- 模式: %s\n", cfg.Server.Mode)
-	fmt.Printf("- 数据库类型: %s\n", cfg.DB.Type)
-	fmt.Printf("- 数据库名称: %s\n", cfg.DB.Name)
-	fmt.Printf("- JWT密钥长度: %d\n", len(cfg.JWT.Secret))
-	fmt.Printf("- CORS允许来源: %s\n", cfg.CORS.AllowOrigins)
+	// 初始化数据库
+	if err := database.InitDB(cfg); err != nil {
+		log.Fatalf("Failed to initialize database: %v", err)
+	}
 
-	log.Println("配置加载完成")
+	// 获取数据库实例
+	db := database.GetDB()
+
+	// 自动迁移数据库表
+	if err := db.AutoMigrate(&models.User{}); err != nil {
+		log.Fatalf("Failed to migrate database: %v", err)
+	}
+
+	// 设置Gin模式
+	gin.SetMode(cfg.Server.Mode)
+
+	// 初始化依赖注入层
+	userRepo := repository.NewUserRepository(db)
+	userService := services.NewUserService(userRepo)
+
+	// 初始化路由
+	deps := router.HandlerDependencies{
+		UserService: userService,
+	}
+	r := router.NewRouter(deps)
+
+	// 启动服务器
+	log.Printf("Server starting on port %s", cfg.Server.Port)
+	if err := r.Run(":" + cfg.Server.Port); err != nil {
+		log.Fatalf("Failed to start server: %v", err)
+	}
 }

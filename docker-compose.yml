@@ -1,0 +1,38 @@
+services:
+  mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    container_name: progress_wall_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: progress_wall_2025
+      MYSQL_DATABASE: progress_wall
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    command: --default-authentication-plugin=mysql_native_password
+    networks:
+      - progress_wall_network
+
+  redis:
+    image: redis:latest
+    restart: unless-stopped
+    container_name: progress_wall_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - progress_wall_network
+
+
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  progress_wall_network:
+    driver: bridge
