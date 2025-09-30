@@ -2,9 +2,9 @@
   <span
     :class="cn(
       'relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full',
-      $attrs.class
+      typeof $attrs.class === 'string' ? $attrs.class : undefined
     )"
-    v-bind="$attrs"
+    v-bind="Object.fromEntries(Object.entries($attrs).filter(([k]) => k !== 'class'))"
   >
     <img
       v-if="src"
