@@ -1,6 +1,7 @@
 <template>
   <Card
-    class="p-4 cursor-move hover:shadow-md transition-shadow"
+    class="p-4 cursor-pointer hover:shadow-md transition-all hover:scale-[1.02]"
+    :data-task-id="task.id"
     @click="$emit('select', task)"
   >
     <div class="space-y-2">

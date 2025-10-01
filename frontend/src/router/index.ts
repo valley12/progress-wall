@@ -18,6 +18,12 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/dashboard/KanbanView.vue')
   },
   {
+    path: '/tasks/:taskId',
+    name: 'TaskDetail',
+    component: () => import('@/views/dashboard/TaskDetailView.vue'),
+    props: true
+  },
+  {
     path: '/profile',
     name: 'Profile',
     component: () => import('@/views/user/ProfileView.vue')

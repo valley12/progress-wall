@@ -35,8 +35,8 @@ const goHome = () => {
 }
 
 const selectTask = (task: any) => {
-  // 这里可以添加任务详情编辑功能
-  console.log('Selected task:', task)
+  // 点击任务卡片跳转到任务详情页
+  router.push(`/tasks/${task.id}`)
 }
 
 const deleteTask = (taskId: string) => {
